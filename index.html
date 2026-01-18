@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>wayne.exe - Robotics & Software Engineer</title>
+  <link href="https://fonts.googleapis.com/css2?family=VT323&display=swap" rel="stylesheet">
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      background: #000000;
+      color: #00ff55; /* Crisp, bright phosphor green – no glow */
+      font-family: 'VT323', monospace;
+      font-size: 1.6rem; /* Larger for clarity */
+      line-height: 1.45;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+      image-rendering: pixelated; /* Helps keep pixel font sharp on modern displays */
+    }
+    .container {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 2.2rem;
+    }
+    header {
+      text-align: center;
+      border-bottom: 3px solid #00ff55;
+      padding-bottom: 1.2rem;
+      margin-bottom: 2.2rem;
+    }
+    h1, h2, h3 {
+      margin: 0.6rem 0;
+    }
+
+    /* ── Terminal typing animation ─────────────────────────────────────── */
+    .terminal-status {
+      height: 2.2rem;
+      margin-bottom: 1.1rem;
+      font-size: 1.5rem;
+      color: #00ff99;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      user-select: none;
+    }
+    .terminal-status::before {
+      content: "root@wayne:~$ ";
+      color: #ff00ff;
+      margin-right: 0.8rem;
+    }
+    .typing {
+      overflow: hidden;
+      white-space: nowrap;
+      border-right: 0.15em solid #00ff55;
+      animation: 
+        typing 3.8s steps(38, end) infinite,
+        blink-caret 0.75s step-end infinite;
+    }
+    @keyframes typing {
+      0%   { width: 0; }
+      25%  { width: 38ch; }     /* length of text + some buffer */
+      50%  { width: 38ch; }
+      75%  { width: 0; }
+      100% { width: 0; }
+    }
+    @keyframes blink-caret {
+      from, to   { border-color: transparent; }
+      50%        { border-color: #00ff55; }
+    }
+    /* ───────────────────────────────────────────────────────────────────── */
+
+    .ide-window {
+      background: #000;
+      border: 3px solid #222;
+      border-radius: 6px;
+      margin: 2.2rem 0;
+      padding: 1.6rem;
+    }
+    .ide-window::before {
+      content: "wayne_ide_v1.0 - [root@portfolio] ~ ";
+      color: #00ff99;
+      display: block;
+      margin-bottom: 0.9rem;
+      font-weight: bold;
+    }
+    nav {
+      text-align: center;
+      margin: 1.2rem 0 2.5rem;
+      font-size: 1.7rem;
+    }
+    nav a {
+      color: #00ff55;
+      margin: 0 1.8rem;
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+    nav a:hover {
+      color: #ffffff;
+    }
+    nav a.active {
+      color: #ffffff;
+      border-bottom: 2px solid #00ff55;
+    }
+    ul.languages {
+      list-style: none;
+      padding: 0;
+      columns: 3;
+      gap: 1.2rem;
+    }
+    ul.languages li::before {
+      content: "> ";
+      color: #ff00ff;
+    }
+    .project-year {
+      color: #ffcc00;
+      font-size: 1.8rem;
+      margin-top: 2.2rem;
+    }
+    .project-desc {
+      margin-left: 2.2rem;
+    }
+    .mission {
+      font-style: italic;
+      color: #00ff99;
+      margin: 1.6rem 0;
+      padding: 0 1.2rem;
+    }
+    img.visual {
+      width: 100%;
+      max-width: 680px;
+      border: 2px solid #333;
+      border-radius: 4px;
+      margin: 1.8rem auto;
+      display: block;
+    }
+    footer {
+      text-align: center;
+      margin-top: 5.5rem;
+      color: #444;
+      font-size: 1.3rem;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+
+    <header>
+      <h1>wayne.exe</h1>
+      <h2>Self-Taught Robotics & Software Engineer</h2>
+      <h3>Palintir | Amazon | Microsoft | VIV</h3>
+    </header>
+
+    <!-- Terminal typing line added here -->
+    <div class="terminal-status">
+      <span class="typing">currently viewing: about</span>
+    </div>
+
+    <nav>
+      <a href="index.html" class="active">ABOUT</a>
+      <a href="blog.html">BLOG</a>
+      <a href="documentation.html">DOCUMENTATION</a>
+      <a href="downloads.html">DOWNLOADS</a>
+    </nav>
+
+    <div class="ide-window" id="about">
+      <h2>ABOUT ME</h2>
+      <p>I'm Wayne, an 18-year-old self-taught robotics and software engineer. I work on practical hardware and software projects, stream development sessions on Kick (15.7k followers), and focus on building tools that solve real problems.</p>
+      <p>I learned by doing—starting with small games and growing into robotics, embedded systems, and machine learning through hands-on projects, documentation, and iteration. I value curiosity, careful engineering, and shipping useful solutions.</p>
+      <p><strong>Fluent in over 20 programming languages</strong> (I bounce between them effortlessly depending on the job):</p>
+      <ul class="languages">
+        <li>Python</li><li>JavaScript / TypeScript</li><li>Rust</li><li>C++</li><li>C#</li>
+        <li>Java</li><li>Go</li><li>C</li><li>Swift</li><li>Kotlin</li>
+        <li>PHP</li><li>Ruby</li><li>HTML/CSS</li><li>SQL</li><li>Assembly</li>
+        <li>Zig</li><li>Elixir</li><li>Lua</li><li>Perl</li><li>Haskell</li>
+        <li>Prolog</li><li>Fortran</li><li>Scratch</li>
+      </ul>
+
+      <h3>My Mission</h3>
+      <p class="mission">My goal is to deliver and resolve multiple problems and challenges facing the modern world and my own generation. From accessibility tech that gives people back independence, to tools that fight misinformation and deepfakes, to smarter systems that prevent failures before they hurt — I'm focused on building practical, impactful solutions that actually move the needle, one project at a time.</p>
+    </div>
+    
+    <div class="ide-window" id="projects">
+      <h2>PROJECTS</h2>
+
+      <div class="project-year">2026</div>
+      <div class="project-desc">
+        <strong>VIV - Predictive AI Monitoring Software</strong><br>
+        Enterprise-grade real-time predictive monitoring platform that uses custom AI models to forecast system failures, resource bottlenecks, and anomalies — includes proactive alerting, automated remediation scripts, and dashboard visualization.<br>
+        <em>Tech: Python (core logic & ML), TensorFlow/PyTorch, Rust (high-performance data ingestion), Prometheus integration</em>
+      </div>
+
+      <div class="project-year">2025</div>
+      <div class="project-desc">
+        <strong>Illumineye - AI Image & Video Detection Tool</strong><br>
+        Advanced forensic detector specialized in identifying AI-generated or deepfake media — crushes even heavily modified signatures, post-processed fakes, and adversarial examples. Multi-stage pipeline includes: high-res pixel noise analysis, frequency-domain artifact detection (DCT/FFT/Wavelet), temporal inconsistency tracking across video frames, metadata & compression fingerprinting, plus an ensemble of custom adversarial-trained models. Benchmarked at >98% accuracy on leading 2025 deepfake datasets.<br>
+        <em>Tech: Python (framework), PyTorch (models), OpenCV (processing), Rust (optimized forensics layer)</em>
+      </div>
+
+      <div class="project-year">2024 - 2025</div>
+      <div class="project-desc">
+        <strong>Prosthetics AI Trainer (Advanced Myoelectric Control Suite)</strong><br>
+        Comprehensive DIY/open-source software ecosystem for developing and training next-gen robotic prosthetics. Focuses on restoring natural, intuitive motion to arms, hands, legs, and feet for amputees. Key features: Custom deep neural networks trained on real EMG (electromyography) signals + biomechanics datasets; reinforcement learning for adaptive gesture recognition (handles user variability over time); real-time feedback loop to reduce phantom limb pain via bio-signal mapping; multi-gesture precision (grip types, wrist rotation, finger individuation); integration with affordable hardware (myoelectric sensors, servo/brushless actuators, Raspberry Pi/embedded controllers); simulation mode for rapid prototyping before physical testing. Currently in beta with volunteer testers — aiming for accessible, low-cost alternatives to commercial prosthetics.<br>
+        <em>Tech: Python (AI/ML training & UI), C++ (real-time embedded control), Rust (safety-critical firmware), ROS2 (robotics middleware), TensorFlow Lite (on-device inference)</em>
+      </div>
+
+      <div class="project-year">2023</div>
+      <div class="project-desc">
+        <strong>Autonomous Drone Swarm Controller</strong><br>
+        Software for managing fleets of drones in dynamic environments like search & rescue — features decentralized AI decision-making, real-time collision avoidance, and task allocation.<br>
+        <em>Tech: Python, Go (distributed networking), C++</em>
+      </div>
+
+      <div class="project-year">2022</div>
+      <div class="project-desc">
+        <strong>Edge AI Security Scanner</strong><br>
+        Portable, on-device network vulnerability scanner leveraging lightweight ML models for zero-trust detection.<br>
+        <em>Tech: Rust (core), Python (ML), Assembly (optimizations)</em>
+      </div>
+
+      <div class="project-year">2021</div>
+      <div class="project-desc">
+        <strong>Lazy Kernel</strong><br>
+        Early hobby OS built from scratch — boots via custom bootloader, basic memory manager, simple shell, and text editor in under 6k lines. Huge learning curve on interrupts, paging, and drivers.<br>
+        <em>Tech: C (kernel), Assembly (bootloader), Rust (experimental modules)</em>
+      </div>
+
+      <div class="project-year">2016</div>
+      <div class="project-desc">
+        <strong>Pokemon CA FanGame</strong><br>
+        First public release — California-inspired Pokemon fan game with custom regions, creatures, and turn-based battles.<br>
+        <em>Tech: HTML + JavaScript</em>
+      </div>
+    </div>
+
+    <footer>
+      wayne.exe © 2026 • Kick: 15.7k followers • Building tools that matter
+    </footer>
+  </div>
+
+</body>
+</html>

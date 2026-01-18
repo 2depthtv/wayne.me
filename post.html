@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>wayne.exe - Post</title>
+  <link href="https://fonts.googleapis.com/css2?family=VT323&display=swap" rel="stylesheet">
+  <style>
+    /* Same style as above — copy your full CSS here or link to style.css */
+    body { margin:0; padding:0; background:#000; color:#00ff55; font-family:'VT323',monospace; font-size:1.6rem; line-height:1.45; }
+    .container { max-width:900px; margin:0 auto; padding:2.2rem; }
+    header { text-align: center; border-bottom: 3px solid #00ff55; padding-bottom: 1.2rem; margin-bottom: 2.2rem; }
+    nav { text-align: center; margin: 1.2rem 0 2.5rem; font-size: 1.7rem; }
+    nav a { color: #00ff55; margin: 0 1.2rem; text-decoration: none; transition: color 0.2s; }
+    nav a:hover { color: #ffffff; }
+    .terminal-status { height: 2.2rem; margin-bottom: 1.1rem; font-size: 1.5rem; color: #00ff99; display: flex; align-items: center; justify-content: center; }
+    footer { text-align: center; margin-top: 3.5rem; color: #444; font-size: 1.3rem; }
+    .post-content { background:#000; border:3px solid #222; border-radius:6px; padding:2rem; }
+    .post-content h1 { color:#00ff99; font-size:3rem; margin:0 0 1rem; }
+    .post-content .date { color:#ffcc00; font-size:1.5rem; }
+    .post-content img { max-width:100%; border:2px solid #333; }
+    /* If using Markdown → HTML, add basic styling for p, ul, code, etc. */
+    .post-content p { margin:1rem 0; }
+    .post-content pre { background:#001100; padding:1rem; border:1px solid #004400; overflow:auto; }
+    .post-content code { background:#001100; padding:0.2rem 0.4rem; }
+    /* Typing display and cursor */
+    .typed-output { white-space: pre-wrap; font-family: 'VT323', monospace; color: #00ff55; min-height: 40vh; }
+    .cursor { display: inline-block; width: 0.6ch; background: #00ff55; margin-left: 0.08ch; animation: blink 0.9s steps(1,end) infinite; }
+    @keyframes blink { 50% { background: transparent; } }
+    .scroll-indicator {
+      position: fixed; left: 50%; transform: translateX(-50%); bottom: 18px;
+      color: #00ff55; background: rgba(0,0,0,0.6); padding: 0.4rem 0.8rem; border: 1px solid #00ff55; border-radius: 6px; font-size: 1.2rem;
+      z-index: 9999; pointer-events: none;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <header>
+      <h1>wayne.exe</h1>
+      <h2 id="postTitle">Loading...</h2>
+    </header>
+
+    <nav>
+      <!-- same nav, with BLOG active -->
+      <a href="blog.html">BLOG</a> <!-- back link -->
+      <!-- other links -->
+    </nav>
+
+    <div class="post-content" id="postBody">
+      <div id="loading">Loading post...</div>
+    </div>
+
+    <footer>wayne.exe © 2026</footer>
+  </div>
+
+  <script>
+    // Scroll-driven typing / deleting effect
+    async function loadPost() {
+      const urlParams = new URLSearchParams(window.location.search);
+      const id = urlParams.get('id');
+
+      if (!id) {
+        document.getElementById('postBody').innerHTML = '<p style="color:#ff0044;">No post ID provided.</p>';
+        return;
+      }
+
+      try {
+        const indexRes = await fetch('posts.json');
+        const posts = await indexRes.json();
+        const postMeta = posts.find(p => p.id === id);
+        if (!postMeta) throw new Error('Post not found');
+
+        document.getElementById('postTitle').textContent = postMeta.title;
+
+        const postRes = await fetch(postMeta.file);
+        if (!postRes.ok) throw new Error('Failed to load post');
+        const post = await postRes.json();
+
+        // Convert HTML content to plain text for safe typing
+        const tmp = document.createElement('div');
+        tmp.innerHTML = post.content || '';
+        const fullText = (post.title + '\n\n' + (post.date || '') + '\n\n' + tmp.innerText).trim();
+
+        // Prepare typed display
+        const body = document.getElementById('postBody');
+        body.innerHTML = '';
+        const titleEl = document.createElement('h1');
+        titleEl.textContent = post.title;
+        const dateEl = document.createElement('div');
+        dateEl.className = 'date';
+        dateEl.textContent = post.date || '';
+        const typedEl = document.createElement('div');
+        typedEl.className = 'typed-output';
+        body.appendChild(titleEl);
+        body.appendChild(dateEl);
+        body.appendChild(typedEl);
+
+        // Add cursor
+        const cursor = document.createElement('span');
+        cursor.className = 'cursor';
+        cursor.innerHTML = '&nbsp;';
+        typedEl.appendChild(cursor);
+
+        // Add scroll indicator
+        const indicator = document.createElement('div');
+        indicator.className = 'scroll-indicator';
+        indicator.textContent = 'Scroll for more ▼';
+        document.body.appendChild(indicator);
+
+        // Typing state
+        let full = fullText;
+        let total = full.length;
+        if (total === 0) full = '';
+        let current = 0; // current visible chars
+        let target = 0;  // target visible chars from scroll
+
+        function updateTargetFromScroll(){
+          const docH = document.documentElement.scrollHeight - window.innerHeight;
+          const scrollY = Math.max(0, window.scrollY);
+          const pct = docH > 0 ? (scrollY / docH) : 0;
+          target = Math.round(pct * total);
+          // when near the bottom, ensure full reveal
+          if (pct > 0.98) target = total;
+        }
+
+        // animate current towards target with per-character steps
+        let lastTime = 0;
+        function tick(t){
+          if (!lastTime) lastTime = t;
+          const dt = t - lastTime;
+          lastTime = t;
+
+          updateTargetFromScroll();
+
+          if (current < target) {
+            // type forward: speed proportional to dt
+            const step = Math.max(1, Math.round(dt * 0.06));
+            current = Math.min(target, current + step);
+          } else if (current > target) {
+            // delete backward: slightly faster
+            const step = Math.max(1, Math.round(dt * 0.09));
+            current = Math.max(target, current - step);
+          }
+
+          // Render
+          const visible = full.slice(0, current);
+          // keep cursor at end
+          typedEl.textContent = visible;
+          typedEl.appendChild(cursor);
+
+          // Indicator visibility
+          const atEnd = current >= total;
+          indicator.style.display = atEnd ? 'none' : 'block';
+
+          requestAnimationFrame(tick);
+        }
+
+        // Start animation loop
+        requestAnimationFrame(tick);
+
+        // Update target immediately on resize/scroll
+        window.addEventListener('scroll', updateTargetFromScroll, {passive:true});
+        window.addEventListener('resize', updateTargetFromScroll);
+
+        // Ensure initial mapping is correct
+        updateTargetFromScroll();
+
+      } catch (err) {
+        document.getElementById('postBody').innerHTML = `<p style="color:#ff0044;">Error: ${err.message}</p>`;
+      }
+    }
+
+    window.addEventListener('load', loadPost);
+  </script>
+</body>
+</html>
